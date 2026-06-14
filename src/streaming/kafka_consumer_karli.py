@@ -66,6 +66,10 @@ from streaming.data_validation.data_contract_karli import (
     SALES_REQUIRED_FIELDS,
     validate_required_fields,
 )
+from streaming.data_validation.data_validation_karli import (
+    validate_quantity,
+    validate_unit_price,
+)
 from streaming.storage.storage_karli import init_db, write_valid_record
 
 # === CONFIGURE LOGGER ===
@@ -265,6 +269,16 @@ def process_message(
         The enriched row, or None if validation failed.
     """
     errors = validate_required_fields(record=row, required_fields=SALES_REQUIRED_FIELDS)
+    if errors:
+        LOG.warning(f"Validation failed for order {row.get('order_id', '?')}")
+        LOG.warning(f"errors={errors}")
+        return None
+
+    errors = []
+
+    errors.extend(validate_quantity(row["quantity"]))
+    errors.extend(validate_unit_price(row["unit_price"]))
+
     if errors:
         LOG.warning(f"Validation failed for order {row.get('order_id', '?')}")
         LOG.warning(f"errors={errors}")

@@ -36,6 +36,7 @@ from typing import Any, Final
 
 __all__ = [
     "TAX_RATE_DEFAULT",
+    "compute_order_value_level",
     "compute_tax_amount",
     "compute_total_price",
     "enrich_message",
@@ -80,6 +81,16 @@ def compute_tax_amount(total_price: float, tax_rate: float) -> float:
     return round(total_price * tax_rate, 2)
 
 
+def compute_order_value_level(total: float) -> str:
+    """Classify an order based on total value."""
+    if total >= 150:
+        return "high"
+    if total >= 75:
+        return "medium"
+
+    return "low"
+
+
 def enrich_message(
     row: dict[str, Any],
     region_lookup: dict[str, float],
@@ -108,11 +119,15 @@ def enrich_message(
     tax_amount = compute_tax_amount(total_price, tax_rate)
 
     total = round(total_price + tax_amount, 2)
+
+    order_value_level = compute_order_value_level(total)
+
     return {
         **row,
         "subtotal": total_price,
         "tax_amount": tax_amount,
         "total": total,
+        "order_value_level": order_value_level,
     }
 
 

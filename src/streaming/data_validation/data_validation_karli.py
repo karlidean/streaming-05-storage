@@ -58,3 +58,16 @@ def validate_quantity(value: str) -> list[str]:
         return [f"Quantity must be at least 1: {value}"]
 
     return []
+
+
+def validate_unit_price(value: str) -> list[str]:
+    """Return errors for an invalid unit price value."""
+    try:
+        unit_price = float(value)
+    except ValueError:
+        return [f"Unit price must be a number: {value}"]
+
+    if unit_price < 0:
+        return [f"Unit price must be at least 0: {value}"]
+
+    return []
