@@ -172,8 +172,9 @@ bin/kafka-topics.sh --create \
   --bootstrap-server localhost:9092 \
   --partitions 1 \
   --replication-factor 1 \
-  --topic streaming-05-storage-karlidean
+  --topic streaming-05-storage-karli
 ```
+Please use the topic streaming-05-storage-case if the `.env` is not available.
 
 ### In VS Code Terminal 3: Run Project and Producer (producer)
 
@@ -199,7 +200,8 @@ uvx pre-commit run --all-files
 
 # run the producer
 clear
-uv run python -m streaming.kafka_producer_karlidean
+uv run python -m streaming.kafka_producer_karli
+# Note: please use uv run python -m streaming.kafka_producer_case if the topic was unavailable to make as streaming-05-storage-karli
 
 # do chores
 uv run ruff format .
@@ -223,8 +225,9 @@ Clear the terminal, then start the consumer.
 
 ```shell
 clear
-uv run python -m streaming.kafka_consumer_karlidean
+uv run python -m streaming.kafka_consumer_karli
 ```
+# Note: please use uv run python -m streaming.kafka_consumer_case if the topic was unavailable to make as streaming-05-storage-karli
 
 To start fresh, see
 [manage topics](https://denisecase.github.io/pro-analytics-02/kafka/manage-topics/)
